@@ -1,0 +1,14 @@
+Compiling 1 files with Solc 0.8.30
+Solc 0.8.30 finished in 23.15ms
+Error: Compiler run failed:
+Error (9553): Invalid type for argument in function call. Invalid implicit conversion from uint256 to bytes32 requested.
+  --> src/Raffle.sol:61:26:
+   |
+61 |                 keyHash: i_keyHash,
+   |                          ^^^^^^^^^
+
+Error (9553): Invalid type for argument in function call. Invalid implicit conversion from uint256 to uint32 requested.
+  --> src/Raffle.sol:64:35:
+   |
+64 |                 callbackGasLimit: i_callbackGasLimit,
+   |                                   ^^^^^^^^^^^^^^^^^^
