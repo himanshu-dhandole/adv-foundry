@@ -23,38 +23,52 @@ contract HelperConfig is Script {
         NetworkConfigs[11155111] = getSepoliaNetworkConfig();
     }
 
-    function getConfigByChainId(uint256 _chainId) public returns (NetworkConfig memory) {
+    function getConfigByChainId(
+        uint256 _chainId
+    ) public returns (NetworkConfig memory) {
         if (NetworkConfigs[_chainId].vrfCordinator != address(0)) {
             return NetworkConfigs[_chainId];
         } else if (_chainId == 31337) {
-            getOdCreateAnvilNetworkConfig();
+            return getOdCreateAnvilNetworkConfig();
         } else {
             revert HelperConfig__InvalidChain();
         }
     }
 
     function getConfig() public returns (NetworkConfig memory) {
-        return NetworkConfigs[block.chainid];
+        return getConfigByChainId(block.chainid);
     }
 
-    function getSepoliaNetworkConfig() public pure returns (NetworkConfig memory) {
-        return NetworkConfig({
-            entranceFee: 0.01 ether,
-            vrfCordinator: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
-            interval: 30,
-            gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
-            subscriptionId: 0,
-            callbackGasLimit: 500000
-        });
+    function getSepoliaNetworkConfig()
+        public
+        pure
+        returns (NetworkConfig memory)
+    {
+        return
+            NetworkConfig({
+                entranceFee: 0.01 ether,
+                vrfCordinator: 0x9DdfaCa8183c41ad55329BdeeD9F6A8d53168B1B,
+                interval: 30,
+                gasLane: 0x787d74caea10b2b357790d5b5247c2f63d1d91572a9846f780606e4d953677ae,
+                subscriptionId: 0,
+                callbackGasLimit: 500000
+            });
     }
 
-    function getOdCreateAnvilNetworkConfig() public returns (NetworkConfig memory) {
+    function getOdCreateAnvilNetworkConfig()
+        public
+        returns (NetworkConfig memory)
+    {
         if (localNetworkConfig.vrfCordinator != address(0)) {
             return localNetworkConfig;
         }
 
         vm.startBroadcast();
-        VRFCoordinatorV2_5Mock anvilMock = new VRFCoordinatorV2_5Mock(0.25 ether, 1e9, 4e15);
+        VRFCoordinatorV2_5Mock anvilMock = new VRFCoordinatorV2_5Mock(
+            0.25 ether,
+            1e9,
+            4e15
+        );
         vm.stopBroadcast();
 
         localNetworkConfig = NetworkConfig({
@@ -66,5 +80,6 @@ contract HelperConfig is Script {
             subscriptionId: 0,
             callbackGasLimit: 500000
         });
+        return localNetworkConfig;
     }
 }
