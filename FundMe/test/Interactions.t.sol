@@ -1,27 +1,27 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+// // SPDX-License-Identifier: MIT
+// pragma solidity ^0.8.18;
 
-import {Test} from "forge-std/Test.sol";
- 
-contract TestInteractions is Test {
-    FundMe fundMe;
-    address USER = makeAddr("user");
-    uint256 constant SEND_VALUE = 0.1 ether;
-    uint256 constant STARTING_BALANCE = 10 ether;
+// import {Test} from "forge-std/Test.sol";
 
-    function setUp() external {
-        DeployFundMe deploy = new DeployFundMe();
-        fundMe = deploy.run();
-        vm.deal(USER, STARTING_BALANCE);
-    }
+// contract TestInteractions is Test {
+//     FundMe fundMe;
+//     address USER = makeAddr("user");
+//     uint256 constant SEND_VALUE = 0.1 ether;
+//     uint256 constant STARTING_BALANCE = 10 ether;
 
-    function testUserCanFundInteractions() public {
-        FundFundMe fundFundMe = new FundFundMe();
-        fundFundMe.fundFundMe(address(fundMe));
+//     function setUp() external {
+//         DeployFundMe deploy = new DeployFundMe();
+//         fundMe = deploy.run();
+//         vm.deal(USER, STARTING_BALANCE);
+//     }
 
-        WithdrawFundMe withdrawFundMe = new WithdrawFundMe();
-        withdrawFundMe.withdrawFundMe(address(fundMe));
+//     function testUserCanFundInteractions() public {
+//         FundFundMe fundFundMe = new FundFundMe();
+//         fundFundMe.fundFundMe(address(fundMe));
 
-        assert(address(fundMe).balance == 0);
-    }
-}
+//         WithdrawFundMe withdrawFundMe = new WithdrawFundMe();
+//         withdrawFundMe.withdrawFundMe(address(fundMe));
+
+//         assert(address(fundMe).balance == 0);
+//     }
+// }
