@@ -5,6 +5,7 @@ import {Test, console} from "forge-std/Test.sol";
 import {DeployRaffle} from "script/DeployRaffle.s.sol";
 import {Raffle} from "src/Raffle.sol";
 import {HelperConfig} from "script/HelperConfig.s.sol";
+import {Vm} from "forge-std/Vm.sol";
 
 contract TestRaffle is Test {
     Raffle public raffle;
@@ -21,12 +22,16 @@ contract TestRaffle is Test {
     uint32 callbackGasLimit;
 
     address USER = makeAddr("user");
+    address PLAYER1 = makeAddr("player");
+
+    // SETUP
 
     function setUp() public {
         DeployRaffle deployRaffle = new DeployRaffle();
         (raffle, helperConfig) = deployRaffle.deployRaffle();
         console.log(address(raffle));
         vm.deal(USER, 50e18);
+        vm.deal(PLAYER1, 50e18);
         HelperConfig.NetworkConfig memory config = helperConfig.getConfig();
 
         entranceFee = config.entranceFee;
@@ -64,7 +69,40 @@ contract TestRaffle is Test {
         raffle.enterRaffle{value: 0.01 ether}();
     }
 
+    // CHECK UPKEEP
+
     function testDontAllowPlayersWhenCALCULATING_WINNER() public {
+        vm.prank(PLAYER1);
+        raffle.enterRaffle{value: 1 ether}();
+
         vm.prank(USER);
+        vm.warp(block.timestamp + interval + 1);
+        vm.roll(block.number + 1);
+        raffle.performUpkeep("");
+
+        vm.expectRevert();
+        vm.prank(USER);
+        raffle.enterRaffle{value: 1 ether}();
+    }
+
+    // PERFORM UPKEEP
+
+    function testUpkeepEmitsRandomWordsRequestId() public {
+        vm.prank(PLAYER1);
+        raffle.enterRaffle{value: 1 ether}();
+
+        vm.prank(USER);
+        vm.warp(block.timestamp + interval + 1);
+        vm.roll(block.number + 1);
+
+        vm.recordLogs();
+        raffle.performUpkeep("");
+        Vm.Log[] memory entries = vm.getRecordedLogs();
+        console.log("Number of logs recorded:", entries.length);
+        bytes32 requestId = entries[1].topics[1];
+
+        Raffle.RaffleState rState = raffle.getRaffleState();
+        assert(requestId > 0);
+        assert(uint256(rState) == 1);
     }
 }
