@@ -10,7 +10,6 @@ contract TestRaffle is Test {
     Raffle public raffle;
     HelperConfig public helperConfig;
 
-
     event RaffleEntered(address indexed player);
     event WinnerPicked(address indexed winner);
 
@@ -51,18 +50,21 @@ contract TestRaffle is Test {
         vm.expectRevert(Raffle.Raffle__NotEnoughEthSent.selector);
         raffle.enterRaffle{value: 0.00001 ether}();
     }
-   
+
     function testPlayerEnteryInRaffle() public {
         vm.prank(USER);
-        raffle.enterRaffle{value : 0.01 ether}();
-        assert(raffle.getPlayerByIndex(0) ==  USER);
+        raffle.enterRaffle{value: 0.01 ether}();
+        assert(raffle.getPlayerByIndex(0) == USER);
     }
 
-    function testExpectEmitAtPlayerEntry () public {
+    function testExpectEmitAtPlayerEntry() public {
         vm.prank(USER);
-        vm.expectEmit(true , false , false , false , address(raffle));
+        vm.expectEmit(true, false, false, false, address(raffle));
         emit RaffleEntered(USER);
-        raffle.enterRaffle{value : 0.01 ether}(); 
+        raffle.enterRaffle{value: 0.01 ether}();
     }
 
+    function testDontAllowPlayersWhenCALCULATING_WINNER() public {
+        vm.prank(USER);
+    }
 }
