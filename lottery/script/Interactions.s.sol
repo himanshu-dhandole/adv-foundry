@@ -63,7 +63,7 @@ contract FundSubscription is Script {
             vm.startBroadcast();
             VRFCoordinatorV2_5Mock(_vrfCordinator).fundSubscription(
                 _subscriptionId,
-                3000 ether
+                3 ether
             );
             vm.stopBroadcast();
         } else {

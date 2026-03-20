@@ -22,6 +22,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
      * Events
      */
     event PlayerEntered(address indexed player);
+    event RequestIdEmited(uint256 indexed requestId);
 
     /**
      * Enums
@@ -35,7 +36,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
      * State variables
      */
     uint16 private constant REQUEST_CONFIRMATIONS = 3;
-    uint256 private constant INTERVAL = 3000;
+    uint256 private constant INTERVAL = 30;
     uint32 private constant NO_OF_WORDS = 1;
     uint256 private immutable ENTRANCE_FEE = 0.01 ether;
     RaffleState private s_raffleState;
@@ -108,6 +109,8 @@ contract Raffle is VRFConsumerBaseV2Plus {
                 )
             })
         );
+
+        emit RequestIdEmited(requestId);
     }
 
     function fulfillRandomWords(
@@ -126,7 +129,7 @@ contract Raffle is VRFConsumerBaseV2Plus {
     }
 
     /**
-     * View / Getter functions
+     * View -> Getter functions
      */
     function getPlayerByIndex(uint256 _index) external view returns (address) {
         return s_players[_index];
@@ -134,5 +137,21 @@ contract Raffle is VRFConsumerBaseV2Plus {
 
     function getEntranceFee() external view returns (uint256) {
         return ENTRANCE_FEE;
+    }
+
+    function gteLastTimeStamp() external view returns (uint256) {
+        return s_lastBlockTimeStamp;
+    }
+
+    function getRaffleState() external view returns (uint256) {
+        return uint256(s_raffleState);
+    }
+
+    function getLatestBlockTimeStamp() external view returns (uint256) {
+        return block.timestamp;
+    }
+
+    function getLatestWinner() external view returns (address) {
+        return s_latestWinner;
     }
 }
