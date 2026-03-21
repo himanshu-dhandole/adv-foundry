@@ -10,3 +10,6 @@
 [submodule "lottery/lib/solmate"]
 	path = lottery/lib/solmate
 	url = https://github.com/transmissions11/solmate
+[submodule "ipfs_and_nft/lib/foundry-devops"]
+	path = ipfs_and_nft/lib/foundry-devops
+	url = https://github.com/Cyfrin/foundry-devops
