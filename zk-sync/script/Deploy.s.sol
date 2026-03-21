@@ -23,7 +23,7 @@ contract DeployRaffle is Script {
             FundSubscription fundSubscription = new FundSubscription();
             fundSubscription.fundSubscription(
                 config.subId,
-                50 ether,
+                50 * 1e18,
                 config.vrfCoordinatorAddress,
                 config.account,
                 config.linkAddress

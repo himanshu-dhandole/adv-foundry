@@ -91,6 +91,8 @@ contract Raffle is VRFConsumerBaseV2Plus {
     }
 
     function performUpkeep(bytes calldata /* performData */) public {
+        (bool success, ) = checkUpkeep("0x00");
+        if (!success) revert Raffle__NotEnoughTimePassed();
         if ((block.timestamp - s_lastBlockTimeStamp) < INTERVAL) {
             revert Raffle__NotEnoughTimePassed();
         }

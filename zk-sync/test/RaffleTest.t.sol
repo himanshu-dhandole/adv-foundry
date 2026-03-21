@@ -60,12 +60,12 @@ contract RaffleTest is Test {
         public
         enteredRaffle
     {
-        uint160 startingIndex = 1;
-        uint160 noOfPlayers = 4;
-        for (uint160 i = startingIndex; i < noOfPlayers + startingIndex; i++) {
-            hoax(address(i), 0.01 ether);
-            raffle.enterRaffle{value: 0.01 ether}();
-        }
+        // uint160 startingIndex = 1;
+        // uint160 noOfPlayers = 4;
+        // for (uint160 i = startingIndex; i < noOfPlayers + startingIndex; i++) {
+        //     hoax(address(i), 0.01 ether);
+        //     raffle.enterRaffle{value: 0.01 ether}();
+        // }
 
         vm.recordLogs();
         vm.prank(USER);
@@ -79,6 +79,7 @@ contract RaffleTest is Test {
 
         address winner = raffle.getLatestWinner();
         console2.log("winner : ", winner);
+        assertEq(winner, USER);
     }
 
     function testGetSubId() public enteredRaffle {
