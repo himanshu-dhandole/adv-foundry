@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 680" width="100%">
+  <defs>
+    <style>
+      .wind-trail { stroke: #00d9ff; fill: none; opacity: 0.6; }
+      .wind-spark { fill: #00d9ff; filter: drop-shadow(0 0 2px #00d9ff); }
+    </style>
+  </defs>
+  
+  <!-- Wind spirit trails -->
+  <path d="M 65 80 Q 50 200 68 380 Q 55 520 70 650" class="wind-trail" stroke-width="1.5"/>
+  <path d="M 155 120 Q 170 250 155 420 Q 165 560 155 660" class="wind-trail" stroke-width="1.5"/>
+  
+  <!-- Wind spark particles -->
+  <circle cx="60" cy="140" r="1.5" class="wind-spark"/>
+  <circle cx="160" cy="190" r="1.5" class="wind-spark"/>
+  <circle cx="65" cy="300" r="1.2" class="wind-spark"/>
+  <circle cx="155" cy="350" r="1.3" class="wind-spark"/>
+  <circle cx="70" cy="480" r="1.2" class="wind-spark"/>
+  <circle cx="150" cy="550" r="1.5" class="wind-spark"/>
+  
+  <!-- Main blade - deep blue with cyan edge -->
+  <path d="M110 25 
+           L122 105 
+           L122 500 
+           Q110 530 98 500 
+           L98 105 Z"
+        fill="#0f1f4a" stroke="#0099cc" stroke-width="2"/>
+  
+  <!-- Blade light side -->
+  <path d="M110 25 L122 105 L122 500 Q110 530 98 500 L98 105 Z" fill="#1a3a6a" opacity="0.7"/>
+  
+  <!-- Bright edge highlight -->
+  <line x1="110" y1="25" x2="110" y2="510" stroke="#00d9ff" stroke-width="3" opacity="0.9"/>
+  <line x1="108" y1="50" x2="108" y2="490" stroke="#00d9ff" stroke-width="1.5" opacity="0.6"/>
+  <line x1="112" y1="50" x2="112" y2="490" stroke="#0099cc" stroke-width="1" opacity="0.5"/>
+  
+  <!-- Wind runes on blade -->
+  <path d="M 100 140 L 110 155 L 100 170 L 90 155 Z" fill="none" stroke="#00d9ff" stroke-width="1.5" opacity="0.8"/>
+  <path d="M 115 250 L 130 270 L 115 290 L 100 270 Z" fill="none" stroke="#0099cc" stroke-width="1.5" opacity="0.6"/>
+  <path d="M 105 380 L 120 405 L 105 430 L 90 405 Z" fill="none" stroke="#00d9ff" stroke-width="1.5" opacity="0.7"/>
+  
+  <!-- Mystical lines -->
+  <line x1="95" y1="200" x2="125" y2="200" stroke="#0099cc" stroke-width="1.5" opacity="0.5"/>
+  <line x1="92" y1="320" x2="128" y2="320" stroke="#0099cc" stroke-width="1.5" opacity="0.5"/>
+  <line x1="95" y1="440" x2="125" y2="440" stroke="#00d9ff" stroke-width="1.5" opacity="0.5"/>
+  
+  <!-- Fuller -->
+  <rect x="107" y="120" width="6" height="360" rx="3" fill="#0a1a3a" stroke="#0099cc" stroke-width="1" opacity="0.7"/>
+  
+  <!-- Guard - celestial -->
+  <rect x="65" y="505" width="90" height="20" rx="5" fill="#1a3a6a" stroke="#00d9ff" stroke-width="1.5"/>
+  <ellipse cx="110" cy="515" rx="48" ry="8" fill="#0099cc" opacity="0.5"/>
+  
+  <!-- Guard gems -->
+  <circle cx="85" cy="515" r="2.5" fill="#00d9ff" opacity="0.9" filter="drop-shadow(0 0 2px #00d9ff)"/>
+  <circle cx="110" cy="515" r="3" fill="#00d9ff" opacity="0.9" filter="drop-shadow(0 0 2px #00d9ff)"/>
+  <circle cx="135" cy="515" r="2.5" fill="#00d9ff" opacity="0.9" filter="drop-shadow(0 0 2px #00d9ff)"/>
+  
+  <!-- Handle - divine material -->
+  <rect x="102" y="525" width="16" height="110" rx="6" fill="#0a1a3a" stroke="#00d9ff" stroke-width="1"/>
+  
+  <!-- Handle wind patterns -->
+  <line x1="98" y1="545" x2="122" y2="545" stroke="#0099cc" stroke-width="1.2" opacity="0.6"/>
+  <line x1="98" y1="570" x2="122" y2="570" stroke="#0099cc" stroke-width="1.2" opacity="0.6"/>
+  <line x1="98" y1="595" x2="122" y2="595" stroke="#0099cc" stroke-width="1.2" opacity="0.6"/>
+  <line x1="98" y1="620" x2="122" y2="620" stroke="#0099cc" stroke-width="1.2" opacity="0.5"/>
+  
+  <!-- Pommel - celestial core -->
+  <circle cx="110" cy="655" r="18" fill="#1a3a6a" stroke="#0099cc" stroke-width="1.5"/>
+  <circle cx="110" cy="655" r="14" fill="#0099cc"/>
+  <circle cx="110" cy="655" r="9" fill="#00d9ff" opacity="0.8"/>
+  
+  <!-- Pommel stars -->
+  <circle cx="106" cy="650" r="1.5" fill="#ffffff"/>
+  <circle cx="114" cy="652" r="1" fill="#ffffff" opacity="0.8"/>
+  
+  <!-- Pommel aura -->
+  <circle cx="110" cy="655" r="22" fill="none" stroke="#0099cc" stroke-width="1" opacity="0.4"/>
+</svg>

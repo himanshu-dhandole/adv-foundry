@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 650" width="100%">
+  <defs>
+    <style>
+      .bg { background: #0a0a0a; }
+    </style>
+  </defs>
+  
+  <!-- Main blade - dark steel -->
+  <path d="M100 30 
+           L115 110 
+           L115 480 
+           Q100 510 85 480 
+           L85 110 Z"
+        fill="#2a2a2a" stroke="#1a1a1a" stroke-width="1.5" stroke-linejoin="round"/>
+  
+  <!-- Blade highlight - sharp edge -->
+  <line x1="100" y1="30" x2="100" y2="500" stroke="#f5f5f5" stroke-width="2.5"/>
+  <line x1="98" y1="50" x2="98" y2="480" stroke="#d0d0d0" stroke-width="1" opacity="0.8"/>
+  <line x1="102" y1="50" x2="102" y2="480" stroke="#888888" stroke-width="0.5" opacity="0.6"/>
+  
+  <!-- Blade shadow side -->
+  <path d="M85 110 L85 480 Q100 510 115 480 L115 110" fill="#1a1a1a" opacity="0.5"/>
+  
+  <!-- Fuller (blood groove) - deep channel -->
+  <rect x="97" y="120" width="6" height="340" rx="3" fill="#0a0a0a" stroke="#3a3a3a" stroke-width="1"/>
+  <line x1="97" y1="120" x2="103" y2="120" stroke="#5a5a5a" stroke-width="1" opacity="0.7"/>
+  
+  <!-- Runes on blade -->
+  <text x="100" y="200" font-size="10" fill="#8a7a6a" text-anchor="middle" opacity="0.5">⚔</text>
+  <text x="100" y="350" font-size="9" fill="#6a5a4a" text-anchor="middle" opacity="0.4">◆</text>
+  
+  <!-- Blade scratches/wear -->
+  <line x1="87" y1="150" x2="88" y2="300" stroke="#5a5a5a" stroke-width="0.5" opacity="0.4"/>
+  <line x1="113" y1="200" x2="112" y2="400" stroke="#5a5a5a" stroke-width="0.5" opacity="0.3"/>
+  <line x1="90" y1="280" x2="91" y2="450" stroke="#5a5a5a" stroke-width="0.4" opacity="0.3"/>
+  
+  <!-- Guard - ornate steel -->
+  <rect x="40" y="475" width="120" height="22" rx="6" fill="#4a4a4a" stroke="#2a2a2a" stroke-width="1.5"/>
+  <ellipse cx="100" cy="486" rx="65" ry="8" fill="#6a6a6a" opacity="0.6"/>
+  
+  <!-- Guard detail bands -->
+  <rect x="50" y="478" width="100" height="5" rx="2" fill="#5a5a5a"/>
+  <rect x="50" y="493" width="100" height="5" rx="2" fill="#3a3a3a"/>
+  
+  <!-- Guard gemstones -->
+  <circle cx="75" cy="486" r="2.5" fill="#d4af37" opacity="0.9"/>
+  <circle cx="100" cy="486" r="3" fill="#d4af37" opacity="0.9"/>
+  <circle cx="125" cy="486" r="2.5" fill="#d4af37" opacity="0.9"/>
+  
+  <!-- Handle - wrapped leather -->
+  <rect x="92" y="497" width="16" height="100" rx="6" fill="#1a0f08" stroke="#0f0805" stroke-width="1"/>
+  
+  <!-- Leather wrap lines -->
+  <line x1="88" y1="515" x2="112" y2="515" stroke="#2a1810" stroke-width="1.5" opacity="0.8"/>
+  <line x1="88" y1="535" x2="112" y2="535" stroke="#2a1810" stroke-width="1.5" opacity="0.8"/>
+  <line x1="88" y1="555" x2="112" y2="555" stroke="#2a1810" stroke-width="1.5" opacity="0.8"/>
+  <line x1="88" y1="575" x2="112" y2="575" stroke="#2a1810" stroke-width="1.5" opacity="0.8"/>
+  
+  <!-- Leather highlights -->
+  <rect x="94" y="505" width="12" height="85" rx="4" fill="#2a1810" opacity="0.6"/>
+  
+  <!-- Pommel - steel sphere -->
+  <circle cx="100" cy="615" r="18" fill="#4a4a4a" stroke="#2a2a2a" stroke-width="1.5"/>
+  <circle cx="100" cy="615" r="14" fill="#6a6a6a"/>
+  <circle cx="100" cy="615" r="10" fill="#3a3a3a"/>
+  
+  <!-- Pommel shine -->
+  <circle cx="96" cy="609" r="3.5" fill="#f5f5f5" opacity="0.7"/>
+  <circle cx="104" cy="612" r="2" fill="#d0d0d0" opacity="0.5"/>
+</svg>

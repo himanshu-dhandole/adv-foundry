@@ -28,6 +28,8 @@ snapshot :; forge snapshot
 
 format :; forge fmt
 
-deploy-sepolia:; forge script script/DeployBasicNFT.s.sol:DeployBasicNFT --rpc-url ${SEPOLIA_RPC_URL} --private-key ${PRIVATE_KEY} --verify --etherscan-api-key ${ETHERSCAN_API_KEY} --broadcast -vvvv
+# deploy-sepolia:; forge script script/DeployBasicNFT.s.sol:DeployBasicNFT --rpc-url ${SEPOLIA_RPC_URL} --private-key ${PRIVATE_KEY} --verify --etherscan-api-key ${ETHERSCAN_API_KEY} --broadcast -vvvv
 
 mint:; forge script script/Interaction.s.sol:Interactions --rpc-url ${SEPOLIA_RPC_URL} --private-key ${PRIVATE_KEY} --verify --etherscan-api-key ${ETHERSCAN_API_KEY}  --broadcast -vvvvv
+
+deploy-sepolia:; forge script script/DeployDynamicNFT.s.sol:DeployDynamicNFT --rpc-url ${SEPOLIA_RPC_URL} --private-key ${PRIVATE_KEY} --verify --etherscan-api-key ${ETHERSCAN_API_KEY} --broadcast -vvvv
