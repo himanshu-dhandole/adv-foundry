@@ -29,4 +29,18 @@ contract LowLevelCall {
         (bool success, ) = address(this).call(getEncodedArgs(_from, amount));
         return (success);
     }
+
+    function callTransferLowLevelSig(
+        address _from,
+        uint256 amount
+    ) public returns (bool) {
+        (bool success, ) = address(this).call(
+            abi.encodeWithSignature(
+                "transferFrom(address,uint256)",
+                _from,
+                amount
+            )
+        );
+        return (success);
+    }
 }
