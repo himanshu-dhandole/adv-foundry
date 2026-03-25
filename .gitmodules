@@ -13,3 +13,6 @@
 [submodule "ipfs_and_nft/lib/foundry-devops"]
 	path = ipfs_and_nft/lib/foundry-devops
 	url = https://github.com/Cyfrin/foundry-devops
+[submodule "Decentralised-StableCoin/lib/openzeppelin-contracts"]
+	path = Decentralised-StableCoin/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
