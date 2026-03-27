@@ -31,12 +31,19 @@ contract DSCEngine is ReentrancyGuard {
     error DSCEngine__TransferFailed();
     error DSCEngine__MintFailed();
     error DSCEngine__HealthFactorTooLow();
+    error DSCEngine__BurnFailed();
+    error DSCEngine__HealthFactorNotChanged();
+    error DSCEngine__NotLiquidatable();
+    error DSCEngine__DebtIsLow();
 
     /**
      * Events
      */
     event CollateralDepositSuccess(
         address indexed _depositor, address indexed _collateralAddress, uint256 indexed _amount
+    );
+    event CollateralReedemd(
+        address indexed _fromReedmed, address indexed _toSent, address indexed _collateralAddress, uint256 _amount
     );
 
     /**
@@ -49,6 +56,7 @@ contract DSCEngine is ReentrancyGuard {
     address[] private s_CollateralTokens;
     uint256 private constant LIQUIDATION_THRESHOLD = 50;
     uint256 private constant LIQUIDATION_PRECISION = 100;
+    uint256 private constant LIQUIDATION_BONUS = 10;
 
     /**
      * Modifiers
@@ -87,6 +95,16 @@ contract DSCEngine is ReentrancyGuard {
     /**
      * Core Functions
      */
+    function depositCollateralAndMintDSC(address _collateralAddress, uint256 _amount, uint256 _amountToBeMinted)
+        public
+        checkValidAmount(_amount)
+        checkAllowedToken(_collateralAddress)
+        nonReentrant
+    {
+        depositCollateral(_collateralAddress, _amount);
+        mintDSC(_amountToBeMinted);
+    }
+
     function depositCollateral(address _collateralAddress, uint256 _amount)
         public
         checkValidAmount(_amount)
@@ -101,8 +119,6 @@ contract DSCEngine is ReentrancyGuard {
         }
     }
 
-    function withdrawCollateral() public {}
-
     function mintDSC(uint256 _amount) public checkValidAmount(_amount) {
         s_DscMinted[msg.sender] += _amount;
         // check the health ratio to be valid
@@ -115,11 +131,85 @@ contract DSCEngine is ReentrancyGuard {
         }
     }
 
-    function burnDSC() public {}
+    /**
+     * Withdrawl Functions
+     */
+    function reedemCollateralAndBurnDSC(address _collateralAddress, uint256 _amount, uint256 _amountToBeBurned)
+        public
+        checkValidAmount(_amount)
+        nonReentrant
+    {
+        burnDSC(_amountToBeBurned);
+        reedemCollateral(_collateralAddress, _amount);
+    }
 
-    function liquidate() public {}
+    function reedemCollateral(address _collateralAddress, uint256 _amount)
+        public
+        checkValidAmount(_amount)
+        nonReentrant
+    {
+        _reedemCollateral(msg.sender, msg.sender, _collateralAddress, _amount);
+        _checkHealthFactorAndRevert(msg.sender);
+    }
+
+    function burnDSC(uint256 _amount) public checkValidAmount(_amount) nonReentrant {
+        _burnDSC(_amount, msg.sender, msg.sender);
+    }
+
+    /**
+     * @notice this function checks the healthfactor Identifies bad User and tries to settle this
+     * the liquidator settles the debt for bad user
+     * the liquidator gets 10% for settling the bad Users debt
+     */
+    function liquidate(address _badUser, address _collateralAddress, uint256 _debtToCover)
+        public
+        checkValidAmount(_debtToCover)
+    {
+        if (_debtToCover > s_DscMinted[_badUser]) {
+            revert DSCEngine__DebtIsLow();
+        }
+        uint256 startingHealthfactor = _getHealthFactor(_badUser);
+        if (startingHealthfactor > 1e18) {
+            revert DSCEngine__NotLiquidatable();
+        }
+        uint256 collateralNeededToSettleDebt = _convertDscToCollateral(_collateralAddress, _debtToCover);
+
+        // giving 10% more to the liquidator as a bonus
+        // the amount is given by our treasury
+        uint256 liquidatorsBonus = (collateralNeededToSettleDebt * LIQUIDATION_BONUS) / 100;
+        uint256 totalAmountToReedem = collateralNeededToSettleDebt + liquidatorsBonus;
+        _burnDSC(_debtToCover, _badUser, msg.sender);
+        _reedemCollateral(_badUser, msg.sender, _collateralAddress, totalAmountToReedem);
+        if (startingHealthfactor >= _getHealthFactor(_badUser)) {
+            revert DSCEngine__HealthFactorNotChanged();
+        }
+    }
 
     // internal functions
+
+    function _burnDSC(uint256 _amountToBurn, address _forWho, address _dscFrom) internal {
+        s_DscMinted[_forWho] -= _amountToBurn;
+        bool success = i_dsc.transferFrom(_dscFrom, address(this), _amountToBurn);
+        if (!success) {
+            revert DSCEngine__BurnFailed();
+        }
+        i_dsc.burn(_amountToBurn);
+    }
+
+    function _reedemCollateral(address _from, address _to, address _collateralAddress, uint256 _amount) internal {
+        s_collateralToUser[_from][_collateralAddress] -= _amount;
+        emit CollateralReedemd(_from, _to, _collateralAddress, _amount);
+        bool success = IERC20(_collateralAddress).transfer(_to, _amount);
+        if (!success) {
+            revert DSCEngine__TransferFailed();
+        }
+    }
+
+    function _convertDscToCollateral(address _collateralAddress, uint256 _debtToCover) internal view returns (uint256) {
+        AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[_collateralAddress]);
+        (, int256 price,,,) = priceFeed.latestRoundData();
+        return (_debtToCover * 1e18 / (uint256(price) * 1e10));
+    }
 
     function _getAccountInformation(address _user) public view returns (uint256, uint256) {
         // total minted
@@ -154,6 +244,7 @@ contract DSCEngine is ReentrancyGuard {
     }
 
     // external view functions
+
     function getAccountTotalCollateralInUSD(address _user) public view returns (uint256) {
         uint256 totalCollateralInUSD = 0;
         for (uint256 i = 0; i < s_CollateralTokens.length; i++) {
