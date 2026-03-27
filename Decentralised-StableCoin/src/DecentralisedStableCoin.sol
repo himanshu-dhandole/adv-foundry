@@ -40,14 +40,14 @@ contract DecentralisedStableCoin is ERC20Burnable, Ownable {
         super.burn(_amount);
     }
 
-    function mint(uint256 _amount) public onlyOwner returns (bool) {
+    function mint(address _to, uint256 _amount) public onlyOwner returns (bool) {
         if (_amount <= 0) {
             revert DecentralisedStableCoin__AmountShouldBeNonZero();
         }
         if (msg.sender == address(0)) {
             revert DecentralisedStableCoin__MustBeNonZeroAddress();
         }
-        _mint(msg.sender, _amount);
+        _mint(_to, _amount);
         return true;
     }
 
