@@ -1,0 +1,32 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+
+# Compiler settings
+solc_version = "0.8.24" # Recommended to pin your solidity version
+evm_version = "cancun"  # Most recent mainnet fork
+optimizer = true
+optimizer_runs = 200    # Set to 10M if you care about runtime gas more than deploy gas
+
+# Formatting
+[fmt]
+line_length = 120
+tab_width = 4
+bracket_spacing = true
+int_types = "long"
+
+# Fuzzing defaults
+[fuzz]
+runs = 256 # Higher runs in CI, lower for local
+
+[invariant]
+runs = 128
+depth = 120
+fail_on_revert = false 
+
+# Additional profiles
+[profile.ci]
+fuzz = { runs = 1000 }
+invariant = { runs = 256 }
+verbosity = 4
