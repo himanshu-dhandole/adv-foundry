@@ -32,10 +32,24 @@ contract Handler is Test {
         vm.stopPrank();
     }
 
-    function _getCollateralFromSeed(uint256 _seed) private returns (ERC20Mock) {
+    function _getCollateralFromSeed(uint256 _seed) private view returns (ERC20Mock) {
         if (_seed % 2 == 0) {
             return ERC20Mock(wETH);
         }
         return ERC20Mock(wBTC);
+    }
+
+    function reedemCollateral(uint256 _seed, uint256 _amount) public {
+        ERC20Mock collateral = _getCollateralFromSeed(_seed);
+        _amount = bound(_amount, 0, type(uint96).max);
+        if (_amount == 0) {
+            return;
+        }
+        uint256 collateralOfUser = dscEngine.getCollateralBalanceOfUser(msg.sender, address(collateral));
+        if (collateralOfUser < _amount) {
+            return;
+        }
+        vm.prank(msg.sender);
+        dscEngine.reedemCollateral(address(collateral), _amount);
     }
 }

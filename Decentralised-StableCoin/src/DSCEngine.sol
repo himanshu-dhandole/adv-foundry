@@ -8,6 +8,7 @@ import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {DecentralisedStableCoin} from "src/DecentralisedStableCoin.sol";
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
+import {OracleLib} from "./Library/OracleLib.sol";
 
 /**
  * @title Decentralised Stable Coin Engine
@@ -60,6 +61,7 @@ contract DSCEngine is ReentrancyGuard {
     uint256 private constant MIN_HEALTH_FACTOR = 1e18;
     uint256 private constant PRECISION = 1e18;
     uint256 private constant ADDITIONAL_FEED_PRECISION = 1e10;
+    using OracleLib for AggregatorV3Interface;
 
     /**
      * Modifiers
@@ -210,7 +212,7 @@ contract DSCEngine is ReentrancyGuard {
 
     function _convertDscToCollateral(address _collateralAddress, uint256 _debtToCover) internal view returns (uint256) {
         AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[_collateralAddress]);
-        (, int256 price,,,) = priceFeed.latestRoundData();
+        (, int256 price,,,) = priceFeed.getLatestRoundDataAndRevertIfStale();
         return (_debtToCover * PRECISION / (uint256(price) * ADDITIONAL_FEED_PRECISION));
     }
 
@@ -261,7 +263,7 @@ contract DSCEngine is ReentrancyGuard {
 
     function getValueInUSD(address _token, uint256 _amount) public view returns (uint256) {
         AggregatorV3Interface priceFeed = AggregatorV3Interface(s_priceFeeds[_token]);
-        (, int256 price,,,) = priceFeed.latestRoundData();
+        (, int256 price,,,) = priceFeed.getLatestRoundDataAndRevertIfStale();
         return uint256(((uint256(price) * ADDITIONAL_FEED_PRECISION) * _amount) / PRECISION);
     }
 
