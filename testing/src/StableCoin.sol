@@ -14,13 +14,11 @@ import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
  */
 contract StableCoin is ERC20Burnable, Ownable {
     /////////// ERROR ///////////
-
     error StableCoin__AmountCannotBeZero();
     error StableCoin__CannotMintToAddressZero();
     error StableCoin__BurnAmountExceedsBalance();
 
     /////////// MODIFIER ///////////
-
     modifier checkZero(uint256 _amount) {
         if (_amount <= 0) {
             revert StableCoin__AmountCannotBeZero();
@@ -29,11 +27,9 @@ contract StableCoin is ERC20Burnable, Ownable {
     }
 
     /////////// CONSTRUCTOR ///////////
-
     constructor() ERC20("Decentralised Rupee", "DRS") Ownable(msg.sender) { }
 
     /////////// CORE FUNCTIONS  ///////////
-
     function mint(address _to, uint256 _amount) public checkZero(_amount) onlyOwner returns (bool) {
         if (_to == address(0)) {
             revert StableCoin__CannotMintToAddressZero();
@@ -43,7 +39,8 @@ contract StableCoin is ERC20Burnable, Ownable {
     }
 
     function burn(uint256 _amount) public override onlyOwner checkZero(_amount) {
-        if (_amount >= balanceOf(msg.sender)) {
+        uint256 balance = balanceOf(msg.sender);
+        if (_amount > balance) {
             revert StableCoin__BurnAmountExceedsBalance();
         }
         super.burn(_amount);

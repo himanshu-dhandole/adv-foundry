@@ -106,4 +106,32 @@ contract TestStableCoinEngine is Test {
         address engineDrsAddress = scEngine.getDrsAddress();
         assertEq(engineDrsAddress, address(drs));
     }
+
+    function testReedemCollateral() public deposit {
+        vm.startPrank(USER);
+        uint256 starting = scEngine.getCollateralBalanceOfUser(USER, wETH);
+        console.log("starting bal :", scEngine.getCollateralBalanceOfUser(USER, wETH));
+        scEngine.reedemCollateral(wETH, 1e18);
+        console.log("ending bal :", scEngine.getCollateralBalanceOfUser(USER, wETH));
+        assert(starting > scEngine.getCollateralBalanceOfUser(USER, wETH));
+        vm.stopPrank();
+    }
+
+    modifier mint() {
+        vm.startPrank(USER);
+        scEngine.mintDRS(1000e18);
+        vm.stopPrank();
+        _;
+    }
+
+    function testBurnDSC() public deposit mint {
+        vm.startPrank(USER);
+        uint256 starting = scEngine.getDrsMinted(USER);
+        console.log("starting bal :", starting);
+        drs.approve(address(scEngine), 1e18);
+        scEngine.burnDRS(1e18);
+        console.log("ending bal :", scEngine.getDrsMinted(USER));
+        assert(starting > scEngine.getDrsMinted(USER));
+        vm.stopPrank();
+    }
 }
