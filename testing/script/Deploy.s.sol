@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 ////////////    IMPORTS    ////////////
-import { Script } from "forge-std/Script.sol";
+import { Script, console } from "forge-std/Script.sol";
 import { HelperConfig } from "./HelperConfig.s.sol";
 import { StableCoin } from "src/StableCoin.sol";
 import { StableCoinEngine } from "src/StableCoinEngine.sol";
@@ -24,7 +24,11 @@ contract DeployStableCoin is Script {
         vm.startBroadcast(deployerKey);
         StableCoin drs = new StableCoin();
         StableCoinEngine scEngine = new StableCoinEngine(acceptedTokenAddresses, acceptedTokenPriceFeeds, drs);
+        drs.transferOwnership(address(scEngine));
         vm.stopBroadcast();
+
+        console.log("DRS address : ", address(drs));
+        console.log("DRS Engine address : ", address(scEngine));
 
         return (drs, scEngine, config);
     }

@@ -50,3 +50,5 @@ addConsumer:
 
 fundSubscription:
 	@forge script script/Interactions.s.sol:FundSubscription $(NETWORK_ARGS)
+
+deploy-sepolia:; forge script script/Deploy.s.sol:DeployStableCoin --rpc-url ${SEPOLIA_RPC_URL} --private-key $(PRIVATE_KEY) --verify --etherscan-api-key ${ETHERSCAN_API_KEY} --broadcast 
