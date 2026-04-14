@@ -45,6 +45,7 @@ contract AirdropTest is Test {
     //     console.log("ending bal : ", endingBal);
     //     vm.stopPrank();
     // }
+
     function testAirdropFromSignature() public {
         bytes32 hashedMessage = merkle.getMessageHash(user, 2500 ether);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(userKey, hashedMessage);
